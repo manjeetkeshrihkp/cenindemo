@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cenin Creator Crew | Powered by EliteX</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700;900&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    /* GenZ Dark Mode & Neon Theme Variables */
+    :root {
+      --bg-dark: #09090b;
+      --bg-card: rgba(255, 255, 255, 0.03);
+      --text-main: #ffffff;
+      --text-muted: #a1a1aa;
+      --neon-green: #ccff00;
+      --neon-purple: #b026ff;
+      --neon-blue: #00f0ff;
+      --border-color: rgba(255, 255, 255, 0.1);
+      --glass-blur: blur(16px);
+      --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body { 
+      background-color: var(--bg-dark); 
+      color: var(--text-main); 
+      font-family: 'Inter', sans-serif; 
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 15% 50%, rgba(204, 255, 0, 0.05), transparent 25%),
+        radial-gradient(circle at 85% 30%, rgba(176, 38, 255, 0.05), transparent 25%);
+    }
+
+    h1, h2, h3, .hype-text { font-family: 'Space Grotesk', sans-serif; }
+
+    /* =========================================
+       HEADER / NAVIGATION
+    ========================================= */
+    header {
+      position: fixed; top: 0; left: 0; width: 100%;
+      padding: 1.5rem 5%; display: flex; justify-content: space-between; align-items: center;
+      z-index: 100; background: rgba(9, 9, 11, 0.8); backdrop-filter: var(--glass-blur);
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .back-btn {
+      color: var(--text-main); text-decoration: none; display: flex; align-items: center; gap: 8px;
+      font-weight: 600; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;
+      transition: var(--transition);
+    }
+    .back-btn:hover { color: var(--neon-green); transform: translateX(-5px); }
+    .back-btn svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* ANIMATED CREATOR LOGO */
+    .logo { 
+      font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 900; 
+      letter-spacing: 2px; text-transform: uppercase; display: flex; gap: 8px;
+    }
+    .logo-cenin { color: var(--text-main); }
+    .logo-creator {
+      background: linear-gradient(270deg, var(--neon-green), var(--neon-blue), var(--neon-purple), var(--neon-green));
+      background-size: 400% 400%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: hypeGlow 3s ease infinite;
+    }
+
+    @keyframes hypeGlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* =========================================
+       HERO SECTION
+    ========================================= */
+    .hero {
+      padding: 10rem 5% 4rem 5%; text-align: center; max-width: 900px; margin: 0 auto;
+    }
+    .badge {
+      display: inline-block; padding: 8px 16px; border-radius: 30px; 
+      background: rgba(204, 255, 0, 0.1); color: var(--neon-green);
+      font-weight: 800; font-size: 0.8rem; letter-spacing: 2px; margin-bottom: 1.5rem;
+      border: 1px solid rgba(204, 255, 0, 0.3); text-transform: uppercase;
+    }
+    .hero h1 {
+      font-size: clamp(3rem, 8vw, 5.5rem); font-weight: 900; line-height: 1;
+      text-transform: uppercase; margin-bottom: 1.5rem; letter-spacing: -2px;
+    }
+    .hero p {
+      font-size: 1.2rem; color: var(--text-muted); font-weight: 400; 
+      max-width: 600px; margin: 0 auto 3rem auto; line-height: 1.6;
+    }
+
+    .join-btn {
+      background: var(--neon-green); color: #000; border: none;
+      padding: 1.2rem 3rem; font-size: 1.2rem; font-weight: 900; font-family: 'Space Grotesk', sans-serif;
+      text-transform: uppercase; letter-spacing: 1px; border-radius: 50px; cursor: pointer;
+      transition: var(--transition); box-shadow: 0 0 20px rgba(204, 255, 0, 0.4);
+    }
+    .join-btn:hover {
+      transform: scale(1.05) translateY(-5px);
+      box-shadow: 0 10px 40px rgba(204, 255, 0, 0.6);
+    }
+
+    /* =========================================
+       SCROLLING MARQUEE
+    ========================================= */
+    .marquee-container {
+      width: 100%; overflow: hidden; background: var(--neon-purple); color: #fff;
+      padding: 1rem 0; transform: rotate(-2deg) scale(1.05); margin: 4rem 0;
+      border-top: 2px solid #000; border-bottom: 2px solid #000;
+    }
+    .marquee-content {
+      /* Dramatically sped up to 4s for a much faster feel */
+      display: flex; white-space: nowrap; animation: scroll 4s linear infinite; 
+    }
+    .marquee-content span {
+      font-family: 'Space Grotesk', sans-serif; font-weight: 900; font-size: 1.5rem;
+      text-transform: uppercase; padding: 0 2rem; letter-spacing: 2px;
+    }
+    @keyframes scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* =========================================
+       BENTO GRID (BENEFITS)
+    ========================================= */
+    .bento-container {
+      padding: 2rem 5% 6rem 5%; max-width: 1200px; margin: 0 auto;
+    }
+    .bento-grid {
+      display: grid; grid-template-columns: repeat(12, 1fr); gap: 1.5rem;
+      grid-auto-rows: minmax(220px, auto);
+    }
+    .bento-card {
+      background: var(--bg-card); border: 1px solid var(--border-color);
+      border-radius: 24px; padding: 2.5rem; display: flex; flex-direction: column;
+      justify-content: center; position: relative; overflow: hidden;
+      backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+      transition: var(--transition);
+    }
+    .bento-card:hover {
+      border-color: rgba(255,255,255,0.3); transform: translateY(-5px);
+    }
+    
+    .bento-card::before {
+      content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.05), transparent);
+      transform: translateX(-100%); transition: 0.6s;
+    }
+    .bento-card:hover::before { transform: translateX(100%); }
+
+    /* Specific Grid Sizing */
+    .card-commission { grid-column: span 8; background: linear-gradient(135deg, rgba(204,255,0,0.05), transparent); border-color: rgba(204,255,0,0.2); }
+    .card-commission:hover { border-color: var(--neon-green); box-shadow: 0 10px 30px rgba(204,255,0,0.1); }
+    
+    .card-followers { grid-column: span 4; text-align: center; align-items: center; }
+    
+    .card-reels { grid-column: span 5; }
+    
+    .card-equity { grid-column: span 7; background: linear-gradient(135deg, rgba(176,38,255,0.05), transparent); border-color: rgba(176,38,255,0.2); }
+    .card-equity:hover { border-color: var(--neon-purple); box-shadow: 0 10px 30px rgba(176,38,255,0.1); }
+
+    .card-elitex { grid-column: span 12; background: linear-gradient(135deg, rgba(0,240,255,0.05), transparent); border-color: rgba(0,240,255,0.2); }
+    .card-elitex:hover { border-color: var(--neon-blue); box-shadow: 0 10px 30px rgba(0,240,255,0.1); }
+
+    /* Card Content Typography */
+    .bento-card h3 { font-size: 2.5rem; font-weight: 900; margin-bottom: 1rem; line-height: 1.1; text-transform: uppercase; }
+    .bento-card p { color: var(--text-muted); font-size: 1.1rem; line-height: 1.5; font-weight: 400; }
+    
+    .text-green { color: var(--neon-green); }
+    .text-purple { color: var(--neon-purple); }
+    .text-blue { color: var(--neon-blue); }
+    
+    .big-number { font-size: 5rem; font-weight: 900; color: var(--text-main); line-height: 1; margin-bottom: 0.5rem;}
+
+    /* Responsive Grid */
+    @media (max-width: 900px) {
+      .bento-grid { grid-template-columns: 1fr; }
+      .card-commission, .card-followers, .card-reels, .card-equity, .card-elitex { grid-column: span 1; }
+      .bento-card h3 { font-size: 2rem; }
+    }
+
+    /* =========================================
+       JOIN MODAL
+    ========================================= */
+    .modal-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      z-index: 9999; display: flex; justify-content: center; align-items: center;
+      opacity: 0; visibility: hidden; transition: var(--transition);
+    }
+    .modal-overlay.active { opacity: 1; visibility: visible; }
+    
+    .modal-content {
+      background: #121214; border: 1px solid var(--border-color); border-radius: 24px;
+      padding: 3rem 2.5rem; width: 90%; max-width: 450px; text-align: center;
+      transform: translateY(20px) scale(0.95); transition: var(--transition);
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.8); position: relative;
+    }
+    .modal-overlay.active .modal-content { transform: translateY(0) scale(1); }
+
+    .close-modal {
+      position: absolute; top: 20px; right: 20px; background: none; border: none;
+      color: var(--text-muted); font-size: 1.5rem; cursor: pointer; transition: color 0.2s;
+    }
+    .close-modal:hover { color: #fff; }
+
+    .modal-content h2 { font-size: 2rem; font-weight: 900; margin-bottom: 0.5rem; text-transform: uppercase; color: var(--neon-green); }
+    .modal-content p { color: var(--text-muted); margin-bottom: 2rem; font-size: 0.9rem; }
+
+    .input-group { margin-bottom: 1rem; text-align: left; }
+    .input-group input {
+      width: 100%; padding: 1.2rem; background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border-color); border-radius: 12px;
+      color: #fff; font-size: 1rem; outline: none; font-family: 'Inter', sans-serif;
+      transition: var(--transition);
+    }
+    .input-group input:focus { border-color: var(--neon-green); background: rgba(255,255,255,0.08); }
+    
+    .submit-btn {
+      width: 100%; background: #fff; color: #000; border: none; padding: 1.2rem;
+      border-radius: 12px; font-weight: 900; font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.2rem; text-transform: uppercase; letter-spacing: 1px;
+      cursor: pointer; transition: var(--transition); margin-top: 1rem;
+    }
+    .submit-btn:hover { background: var(--neon-green); transform: translateY(-2px); }
+
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <a href="profile.html" class="back-btn">
+      <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+      Back
+    </a>
+    <div class="logo">
+      <span class="logo-cenin">Cenin</span><span class="logo-creator">Creator</span>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="badge">Creator Crew Onboarding</div>
+    <h1>Don't Just Influence.<br><span class="text-green">Own It.</span></h1>
+    <p>Stop making content for brands that don't pay you. Join the Cenin Creator Crew, cash in on your drip, and get actual equity in the company. We value talent, not just clout.</p>
+    <button class="join-btn" onclick="openModal()">Secure Your Spot</button>
+  </section>
+
+  <!-- SCROLLING MARQUEE -->
+  <div class="marquee-container">
+    <div class="marquee-content">
+      <span>NO FOLLOWERS NEEDED</span> <span>•</span>
+      <span>POWERED BY ELITEX</span> <span>•</span>
+      <span>EARN 5% COMMISSION</span> <span>•</span>
+      <span>10% CREATOR EQUITY</span> <span>•</span>
+      <span>GET BRAND DEALS</span> <span>•</span>
+      <span>NO FOLLOWERS NEEDED</span> <span>•</span>
+      <span>POWERED BY ELITEX</span> <span>•</span>
+      <span>EARN 5% COMMISSION</span> <span>•</span>
+      <span>10% CREATOR EQUITY</span> <span>•</span>
+      <span>GET BRAND DEALS</span> <span>•</span>
+    </div>
+  </div>
+
+  <!-- BENTO GRID (THE OFFER) -->
+  <section class="bento-container">
+    <div class="bento-grid">
+      
+      <!-- EliteX / Brand Deals Card (FULL WIDTH) -->
+      <div class="bento-card card-elitex">
+        <h3>Powered By <span class="text-blue">EliteX</span> Agency.</h3>
+        <p>This isn't just an affiliate program. We actively invest in your growth. The Cenin Creator Crew is directly backed by <strong>EliteX</strong>, a premier marketing agency. Once you're onboarded, our dedicated agents help you grow your personal brand and actively source entirely <strong>different, high-paying brand deals</strong> for you across the industry. When you blow up, we all win.</p>
+      </div>
+
+      <!-- 5% Commission Card -->
+      <div class="bento-card card-commission">
+        <h3>Flat <span class="text-green">5% Cut</span> on<br> Every Sale.</h3>
+        <p>Your style sells. You should get paid for it. Generate your unique creator link and take a clean, transparent 5% commission on every single product purchased through your drip. No earnings cap. Ever.</p>
+      </div>
+
+      <!-- 0 Followers Card -->
+      <div class="bento-card card-followers">
+        <div class="big-number">0</div>
+        <h3 style="font-size: 1.5rem; margin-bottom: 0;">Followers<br>Required</h3>
+        <p style="font-size: 0.9rem; margin-top: 0.5rem;">We care about your aesthetic and content quality, not your follower count. Talent wins.</p>
+      </div>
+
+      <!-- Reels Card -->
+      <div class="bento-card card-reels">
+        <h3>Paid For<br><span class="text-main">Every. Single. Reel.</span></h3>
+        <p>No more "exposure" as payment. For <strong>every single Reel</strong> you make and post featuring our products, we pay you a definitive, guaranteed cash amount. Period.</p>
+      </div>
+
+      <!-- 10% Equity Card -->
+      <div class="bento-card card-equity">
+        <h3><span class="text-purple">10% Equity</span> Pool.</h3>
+        <p>You're not just an affiliate—you're a founding partner of the brand's culture. We have legally locked a 10% equity pool of the Cenin company specifically to distribute among our top-tier Creator Crew.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- BOTTOM CTA -->
+  <div style="text-align: center; padding: 2rem 5% 6rem 5%;">
+    <h2 class="hype-text" style="font-size: 2.5rem; margin-bottom: 1.5rem; text-transform: uppercase;">Ready to get this bread?</h2>
+    <button class="join-btn" onclick="openModal()">Join The Crew Now</button>
+  </div>
+
+  <!-- JOIN MODAL -->
+  <div class="modal-overlay" id="joinModal">
+    <div class="modal-content">
+      <button class="close-modal" onclick="closeModal()">✕</button>
+      <h2>LFG.</h2>
+      <p>Drop your details below to get your creator link and dashboard access.</p>
+      
+      <form onsubmit="event.preventDefault(); submitApplication();">
+        <div class="input-group">
+          <input type="text" id="creatorName" placeholder="Your Full Name" required>
+        </div>
+        <div class="input-group">
+          <input type="text" id="creatorHandle" placeholder="IG / TikTok Handle (@username)" required>
+        </div>
+        <div class="input-group">
+          <input type="email" id="creatorEmail" placeholder="Email Address" required>
+        </div>
+        <button type="submit" class="submit-btn" id="submitBtn">Apply Now</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT FOR MODAL & ANIMATION -->
+  <script>
+    // Marquee Duplication for seamless infinite scroll
+    const marqueeContent = document.querySelector('.marquee-content');
+    marqueeContent.innerHTML += marqueeContent.innerHTML;
+
+    // Modal Logic
+    const modal = document.getElementById('joinModal');
+    
+    function openModal() {
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    }
+    
+    function closeModal() {
+      modal.classList.remove('active');
+      document.body.style.overflow = 'auto';
+    }
+
+    // Close modal if clicked outside the content box
+    modal.addEventListener('click', function(e) {
+      if (e.target === modal) {
+        closeModal();
+      }
+    });
+
+    // Form Submission Logic
+    function submitApplication() {
+      const btn = document.getElementById('submitBtn');
+      const originalText = btn.innerText;
+      
+      // Visual feedback
+      btn.innerText = "PROCESSING...";
+      btn.style.background = "var(--text-muted)";
+      btn.style.color = "#000";
+      
+      // Simulate network request
+      setTimeout(() => {
+        btn.innerText = "APPLICATION SENT 🔥";
+        btn.style.background = "var(--neon-green)";
+        
+        setTimeout(() => {
+            alert("Application received! The EliteX team will review your profile and email your creator dashboard link shortly.");
+            closeModal();
+            // Reset form
+            document.getElementById('creatorName').value = '';
+            document.getElementById('creatorHandle').value = '';
+            document.getElementById('creatorEmail').value = '';
+            
+            btn.innerText = originalText;
+            btn.style.background = "#fff";
+        }, 800);
+      }, 1500);
+    }
+  </script>
+
+</body>
+</html>
