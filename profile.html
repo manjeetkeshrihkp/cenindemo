@@ -544,7 +544,7 @@
             <form id="profileForm" onsubmit="event.preventDefault(); window.saveProfileDetails();">
               <div class="form-group"><label>Full Name</label><input type="text" id="profName" placeholder="Your Name" required></div>
               <div class="form-group"><label>Email Address</label><input type="email" id="profEmail" placeholder="Your Email" required readonly style="background-color: var(--bg-secondary); cursor: not-allowed;"></div>
-              <div class="form-group"><label>Phone Number</label><input type="tel" id="profPhone" placeholder="10-digit mobile" required></div>
+              <div class="form-group"><label>Phone Number</label><input type="tel" id="profPhone" placeholder="10-digit mobile" required pattern="[0-9]{10}" maxlength="10" title="Please enter exactly 10 digits" oninput="this.value = this.value.replace(/[^0-9]/g, '');"></div>
               <div class="form-group"><label>Shipping Address (House & Road)</label><input type="text" id="profAddress" placeholder="Flat, Street, Area" required></div>
               <div style="display: flex; gap: 10px;">
                 <div class="form-group" style="flex: 1;"><label>City</label><input type="text" id="profCity" required></div>
@@ -635,7 +635,7 @@
         <form id="newAddressForm" onsubmit="event.preventDefault(); window.saveExtraAddress();">
           <div class="form-group"><label>Full Name</label><input type="text" id="newAddrName" required></div>
           <div class="form-group"><label>Email Address</label><input type="email" id="newAddrEmail" required readonly style="background-color: var(--bg-secondary); cursor: not-allowed;"></div>
-          <div class="form-group"><label>Phone Number</label><input type="tel" id="newAddrPhone" required></div>
+          <div class="form-group"><label>Phone Number</label><input type="tel" id="newAddrPhone" placeholder="10-digit mobile" required pattern="[0-9]{10}" maxlength="10" title="Please enter exactly 10 digits" oninput="this.value = this.value.replace(/[^0-9]/g, '');"></div>
           <div class="form-group"><label>House / Flat</label><input type="text" id="newAddrHouse" required></div>
           <div class="form-group"><label>Road / Area</label><input type="text" id="newAddrRoad" required></div>
           <div style="display: flex; gap: 10px;">
@@ -712,8 +712,8 @@
              <!-- Personal & Contact Info -->
              <div class="seller-section-title">Contact Info</div>
              <div class="form-group"><label>Full Name *</label><input type="text" required></div>
-             <div class="form-group"><label>Mobile Number *</label><input type="tel" required></div>
-             <div class="form-group"><label>WhatsApp Number *</label><input type="tel" required></div>
+             <div class="form-group"><label>Mobile Number *</label><input type="tel" placeholder="10-digit mobile" required pattern="[0-9]{10}" maxlength="10" title="Please enter exactly 10 digits" oninput="this.value = this.value.replace(/[^0-9]/g, '');"></div>
+             <div class="form-group"><label>WhatsApp Number *</label><input type="tel" placeholder="10-digit mobile" required pattern="[0-9]{10}" maxlength="10" title="Please enter exactly 10 digits" oninput="this.value = this.value.replace(/[^0-9]/g, '');"></div>
              <div class="form-group"><label>Email Address *</label><input type="email" required></div>
              <div class="form-group"><label>Date of Birth</label><input type="date"></div>
              
