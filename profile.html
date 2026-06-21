@@ -285,6 +285,88 @@
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
+
+    /* =========================================
+       CONFIRMATION MODAL STYLES
+    ========================================= */
+    .confirm-modal-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      z-index: 20000;
+      display: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      justify-content: center;
+      align-items: center;
+    }
+    .confirm-modal-overlay.active {
+      display: flex;
+      opacity: 1;
+    }
+    .confirm-modal {
+      background: var(--bg-primary);
+      width: 90%;
+      max-width: 380px;
+      border-radius: 16px;
+      padding: 2.2rem 2rem;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      transform: translateY(20px);
+      transition: transform 0.3s ease;
+      text-align: center;
+    }
+    .confirm-modal-overlay.active .confirm-modal {
+      transform: translateY(0);
+    }
+    .confirm-modal h3 {
+      font-size: 1.15rem;
+      font-weight: 800;
+      margin-bottom: 1.8rem;
+      color: var(--text-main);
+      line-height: 1.5;
+    }
+    .confirm-modal-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+    }
+    .confirm-btn-yes {
+      flex: 1;
+      background: var(--text-main);
+      color: var(--bg-primary);
+      border: none;
+      padding: 0.9rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+    }
+    .confirm-btn-yes:hover {
+      background: var(--accent);
+      color: #000;
+    }
+    .confirm-btn-no {
+      flex: 1;
+      background: transparent;
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+      padding: 0.9rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+    }
+    .confirm-btn-no:hover {
+      background: var(--bg-secondary);
+      border-color: var(--text-main);
+    }
   </style>
 </head>
 <body>
@@ -804,6 +886,17 @@
     </main>
   </div>
 
+  <!-- Custom Confirmation Modal Overlay -->
+  <div class="confirm-modal-overlay" id="confirmModalOverlay">
+    <div class="confirm-modal" onclick="event.stopPropagation()">
+      <h3 id="confirmModalMessage">Are you sure?</h3>
+      <div class="confirm-modal-buttons">
+        <button class="confirm-btn-yes" id="confirmBtnYes">Yes</button>
+        <button class="confirm-btn-no" id="confirmBtnNo">No</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Bottom App Navigation -->
   <nav class="bottom-nav" id="bottomNavBar">
     <a href="index.html" class="nav-item">
@@ -1060,6 +1153,44 @@
 
   <!-- ADDRESS MANAGER LOGIC -->
   <script>
+    window.editingExtraAddressIndex = null;
+
+    // Custom Confirmation Dialog
+    window.showConfirmDialog = function(message, onConfirm) {
+        const overlay = document.getElementById('confirmModalOverlay');
+        const msgEl = document.getElementById('confirmModalMessage');
+        const yesBtn = document.getElementById('confirmBtnYes');
+        const noBtn = document.getElementById('confirmBtnNo');
+
+        msgEl.innerText = message;
+        
+        // Clean up previous event listeners by cloning the buttons
+        const newYesBtn = yesBtn.cloneNode(true);
+        yesBtn.parentNode.replaceChild(newYesBtn, yesBtn);
+        
+        const newNoBtn = noBtn.cloneNode(true);
+        noBtn.parentNode.replaceChild(newNoBtn, noBtn);
+
+        newYesBtn.addEventListener('click', () => {
+            overlay.classList.remove('active');
+            setTimeout(() => overlay.style.display = 'none', 300);
+            onConfirm();
+        });
+
+        const closeConfirm = () => {
+            overlay.classList.remove('active');
+            setTimeout(() => overlay.style.display = 'none', 300);
+        };
+
+        newNoBtn.addEventListener('click', closeConfirm);
+        overlay.onclick = (e) => {
+            if (e.target === overlay) closeConfirm();
+        };
+
+        overlay.style.display = 'flex';
+        setTimeout(() => overlay.classList.add('active'), 10);
+    };
+
     window.showAddressView = function(e) {
         if(e) e.preventDefault();
         document.getElementById('mainProfileView').style.display = 'none';
@@ -1093,7 +1224,8 @@
                      Email: ${data.email || ''}
                    </p>
                    <div style="margin-top:1rem; display:flex; gap:10px;">
-                      <button onclick="window.editDefaultAddress()" style="background:transparent; border:1px solid var(--border-color); padding:0.5rem 1rem; border-radius:6px; cursor:pointer; font-weight:600; font-size:0.8rem; color:var(--text-main); transition:all 0.2s;">Edit Details</button>
+                      <button onclick="window.confirmEditDefaultAddress()" style="background:transparent; border:1px solid var(--border-color); padding:0.5rem 1rem; border-radius:6px; cursor:pointer; font-weight:600; font-size:0.8rem; color:var(--text-main); transition:all 0.2s;">Edit</button>
+                      <button onclick="window.confirmDeleteDefaultAddress()" style="background:rgba(220,38,38,0.1); border:1px solid rgba(248,113,113,0.3); color:#dc2626; padding:0.5rem 1rem; border-radius:6px; cursor:pointer; font-weight:600; font-size:0.8rem; transition:all 0.2s;">Delete</button>
                    </div>
                 </div>`;
             } catch(e) {}
@@ -1113,7 +1245,8 @@
                  Email: ${data.email || ''}
                </p>
                <div style="margin-top:1rem; display:flex; gap:10px;">
-                  <button onclick="window.deleteExtraAddress(${index})" style="background:rgba(220,38,38,0.1); border:1px solid rgba(248,113,113,0.3); color:#dc2626; padding:0.5rem 1rem; border-radius:6px; cursor:pointer; font-weight:600; font-size:0.8rem; transition:all 0.2s;">Delete</button>
+                  <button onclick="window.confirmEditExtraAddress(${index})" style="background:transparent; border:1px solid var(--border-color); padding:0.5rem 1rem; border-radius:6px; cursor:pointer; font-weight:600; font-size:0.8rem; color:var(--text-main); transition:all 0.2s;">Edit</button>
+                  <button onclick="window.confirmDeleteExtraAddress(${index})" style="background:rgba(220,38,38,0.1); border:1px solid rgba(248,113,113,0.3); color:#dc2626; padding:0.5rem 1rem; border-radius:6px; cursor:pointer; font-weight:600; font-size:0.8rem; transition:all 0.2s;">Delete</button>
                </div>
             </div>`;
         });
@@ -1129,7 +1262,69 @@
         window.switchTab('details', document.querySelector('.profile-tab:first-child'));
     };
 
+    window.confirmEditDefaultAddress = function() {
+        window.showConfirmDialog("Are you sure you want to edit?", () => {
+            window.editDefaultAddress();
+        });
+    };
+
+    window.confirmDeleteDefaultAddress = function() {
+        window.showConfirmDialog("Are you sure you want to delete?", () => {
+            localStorage.removeItem('cenin_saved_address');
+            window.renderAddresses();
+        });
+    };
+
+    window.confirmEditExtraAddress = function(index) {
+        window.showConfirmDialog("Are you sure you want to edit?", () => {
+            window.showEditExtraAddressForm(index);
+        });
+    };
+
+    window.confirmDeleteExtraAddress = function(index) {
+        window.showConfirmDialog("Are you sure you want to delete?", () => {
+            const extras = JSON.parse(localStorage.getItem('cenin_extra_addresses') || '[]');
+            extras.splice(index, 1);
+            localStorage.setItem('cenin_extra_addresses', JSON.stringify(extras));
+            window.renderAddresses();
+        });
+    };
+
+    window.showEditExtraAddressForm = function(index) {
+        const extras = JSON.parse(localStorage.getItem('cenin_extra_addresses') || '[]');
+        const data = extras[index];
+        if (!data) return;
+
+        window.editingExtraAddressIndex = index;
+        
+        // Update header
+        const header = document.querySelector('#addAddressFormContainer h3');
+        if (header) header.innerText = "Edit Saved Address";
+
+        // Fill form fields
+        document.getElementById('newAddrName').value = data.name || '';
+        document.getElementById('newAddrEmail').value = data.email || '';
+        document.getElementById('newAddrPhone').value = data.contact || '';
+        document.getElementById('newAddrHouse').value = data.house || '';
+        document.getElementById('newAddrRoad').value = data.road || '';
+        document.getElementById('newAddrCity').value = data.city || '';
+        document.getElementById('newAddrState').value = data.state || '';
+        document.getElementById('newAddrPincode').value = data.pincode || '';
+
+        // Show form container
+        document.getElementById('addAddressFormContainer').style.display = 'block';
+        document.getElementById('addAddressBtn').style.display = 'none';
+        
+        // Scroll to form
+        document.getElementById('addAddressFormContainer').scrollIntoView({ behavior: 'smooth' });
+    };
+
     window.showAddAddressForm = function() {
+        window.editingExtraAddressIndex = null;
+        const header = document.querySelector('#addAddressFormContainer h3');
+        if (header) header.innerText = "Add New Address";
+
+        document.getElementById('newAddressForm').reset();
         document.getElementById('addAddressFormContainer').style.display = 'block';
         document.getElementById('addAddressBtn').style.display = 'none';
         
@@ -1143,6 +1338,7 @@
         document.getElementById('addAddressFormContainer').style.display = 'none';
         document.getElementById('addAddressBtn').style.display = 'block';
         document.getElementById('newAddressForm').reset();
+        window.editingExtraAddressIndex = null;
     };
 
     window.saveExtraAddress = function() {
@@ -1157,19 +1353,14 @@
             pincode: document.getElementById('newAddrPincode').value.trim()
         };
         const extras = JSON.parse(localStorage.getItem('cenin_extra_addresses') || '[]');
-        extras.push(data);
+        if (window.editingExtraAddressIndex !== null && window.editingExtraAddressIndex !== undefined) {
+            extras[window.editingExtraAddressIndex] = data;
+        } else {
+            extras.push(data);
+        }
         localStorage.setItem('cenin_extra_addresses', JSON.stringify(extras));
         window.hideAddAddressForm();
         window.renderAddresses();
-    };
-
-    window.deleteExtraAddress = function(index) {
-        if(confirm("Are you sure you want to delete this address?")) {
-            const extras = JSON.parse(localStorage.getItem('cenin_extra_addresses') || '[]');
-            extras.splice(index, 1);
-            localStorage.setItem('cenin_extra_addresses', JSON.stringify(extras));
-            window.renderAddresses();
-        }
     };
   </script>
 
