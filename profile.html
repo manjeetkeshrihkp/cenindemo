@@ -461,7 +461,7 @@
             <h3 style="margin-bottom: 1.5rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">Personal Information</h3>
             <form id="profileForm" onsubmit="event.preventDefault(); window.saveProfileDetails();">
               <div class="form-group"><label>Full Name</label><input type="text" id="profName" placeholder="Your Name" required></div>
-              <div class="form-group"><label>Email Address</label><input type="email" id="profEmail" placeholder="Your Email (Used for Orders & Wallet)" required></div>
+              <div class="form-group"><label>Email Address</label><input type="email" id="profEmail" placeholder="Your Email" required readonly style="background-color: var(--bg-secondary); cursor: not-allowed;"></div>
               <div class="form-group"><label>Phone Number</label><input type="tel" id="profPhone" placeholder="10-digit mobile" required></div>
               <div class="form-group"><label>Shipping Address (House & Road)</label><input type="text" id="profAddress" placeholder="Flat, Street, Area" required></div>
               <div style="display: flex; gap: 10px;">
@@ -552,12 +552,54 @@
         <h3 style="margin-bottom: 1.5rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">Add New Address</h3>
         <form id="newAddressForm" onsubmit="event.preventDefault(); window.saveExtraAddress();">
           <div class="form-group"><label>Full Name</label><input type="text" id="newAddrName" required></div>
+          <div class="form-group"><label>Email Address</label><input type="email" id="newAddrEmail" required readonly style="background-color: var(--bg-secondary); cursor: not-allowed;"></div>
           <div class="form-group"><label>Phone Number</label><input type="tel" id="newAddrPhone" required></div>
           <div class="form-group"><label>House / Flat</label><input type="text" id="newAddrHouse" required></div>
           <div class="form-group"><label>Road / Area</label><input type="text" id="newAddrRoad" required></div>
           <div style="display: flex; gap: 10px;">
             <div class="form-group" style="flex: 1;"><label>City</label><input type="text" id="newAddrCity" required></div>
-            <div class="form-group" style="flex: 1;"><label>State</label><input type="text" id="newAddrState" required></div>
+            <div class="form-group" style="flex: 1;">
+              <label>State</label>
+              <select id="newAddrState" required style="width: 100%; padding: 0.8rem; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-secondary); color: var(--text-main); font-size: 0.9rem; outline: none;">
+                <option value="" disabled selected>Select State</option>
+                <option value="Andhra Pradesh">Andhra Pradesh</option>
+                <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                <option value="Assam">Assam</option>
+                <option value="Bihar">Bihar</option>
+                <option value="Chhattisgarh">Chhattisgarh</option>
+                <option value="Goa">Goa</option>
+                <option value="Gujarat">Gujarat</option>
+                <option value="Haryana">Haryana</option>
+                <option value="Himachal Pradesh">Himachal Pradesh</option>
+                <option value="Jharkhand">Jharkhand</option>
+                <option value="Karnataka">Karnataka</option>
+                <option value="Kerala">Kerala</option>
+                <option value="Madhya Pradesh">Madhya Pradesh</option>
+                <option value="Maharashtra">Maharashtra</option>
+                <option value="Manipur">Manipur</option>
+                <option value="Meghalaya">Meghalaya</option>
+                <option value="Mizoram">Mizoram</option>
+                <option value="Nagaland">Nagaland</option>
+                <option value="Odisha">Odisha</option>
+                <option value="Punjab">Punjab</option>
+                <option value="Rajasthan">Rajasthan</option>
+                <option value="Sikkim">Sikkim</option>
+                <option value="Tamil Nadu">Tamil Nadu</option>
+                <option value="Telangana">Telangana</option>
+                <option value="Tripura">Tripura</option>
+                <option value="Uttar Pradesh">Uttar Pradesh</option>
+                <option value="Uttarakhand">Uttarakhand</option>
+                <option value="West Bengal">West Bengal</option>
+                <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+                <option value="Chandigarh">Chandigarh</option>
+                <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu</option>
+                <option value="Delhi">Delhi</option>
+                <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                <option value="Ladakh">Ladakh</option>
+                <option value="Lakshadweep">Lakshadweep</option>
+                <option value="Puducherry">Puducherry</option>
+              </select>
+            </div>
           </div>
           <div class="form-group"><label>Pincode</label><input type="text" id="newAddrPincode" required></div>
           <div style="display: flex; gap: 10px; margin-top: 1rem;">
@@ -871,7 +913,7 @@
             try {
                 const data = JSON.parse(saved);
                 document.getElementById('profName').value = data.name || '';
-                document.getElementById('profEmail').value = data.email || '';
+                document.getElementById('profEmail').value = window.currentUser ? window.currentUser.email : (data.email || '');
                 document.getElementById('profPhone').value = data.contact || '';
                 document.getElementById('profAddress').value = (data.house ? data.house + ', ' : '') + (data.road || '');
                 document.getElementById('profCity').value = data.city || '';
@@ -1067,7 +1109,8 @@
                <p style="font-size:0.85rem; color:var(--text-muted); line-height:1.5;">
                  ${data.house || ''}, ${data.road || ''}<br>
                  ${data.city || ''}, ${data.state || ''} - ${data.pincode || ''}<br>
-                 Phone: ${data.contact || ''}
+                 Phone: ${data.contact || ''}<br>
+                 Email: ${data.email || ''}
                </p>
                <div style="margin-top:1rem; display:flex; gap:10px;">
                   <button onclick="window.deleteExtraAddress(${index})" style="background:rgba(220,38,38,0.1); border:1px solid rgba(248,113,113,0.3); color:#dc2626; padding:0.5rem 1rem; border-radius:6px; cursor:pointer; font-weight:600; font-size:0.8rem; transition:all 0.2s;">Delete</button>
@@ -1089,6 +1132,11 @@
     window.showAddAddressForm = function() {
         document.getElementById('addAddressFormContainer').style.display = 'block';
         document.getElementById('addAddressBtn').style.display = 'none';
+        
+        const emailInput = document.getElementById('newAddrEmail');
+        if (emailInput) {
+            emailInput.value = window.currentUser ? (window.currentUser.email || '') : '';
+        }
     };
 
     window.hideAddAddressForm = function() {
@@ -1100,6 +1148,7 @@
     window.saveExtraAddress = function() {
         const data = {
             name: document.getElementById('newAddrName').value.trim(),
+            email: document.getElementById('newAddrEmail').value.trim(),
             contact: document.getElementById('newAddrPhone').value.trim(),
             house: document.getElementById('newAddrHouse').value.trim(),
             road: document.getElementById('newAddrRoad').value.trim(),
@@ -1165,6 +1214,12 @@
             if (pName) pName.innerText = user.displayName || "Google User";
             if (pEmail) pEmail.innerText = user.email;
             if (pAvatar) pAvatar.innerText = (user.displayName || user.email || "?").charAt(0).toUpperCase();
+
+            // Auto fill profile details form email
+            const profEmailInput = document.getElementById('profEmail');
+            if (profEmailInput) {
+                profEmailInput.value = user.email;
+            }
 
             window.fetchUserData();
         } else {
